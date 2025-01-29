@@ -11,7 +11,7 @@
 <body>
     <main>
         <h1>Subida de archivos con validaci&oacute;n</h1>
-        <form action="./src/FileHandler.php" method="post">
+        <form action="./src/FileHandler.php" method="post" enctype="multipart/form-data">
             <div>
                 <label for="name">
                     Nombre del Archivo
@@ -19,7 +19,7 @@
                 <input type="text" id="name" name="name">
             </div>
             <div>
-                <input type="file" name="file" id="file" accept="text/plain">
+                <input type="file" name="file" id="file" accept=".txt" required>
             </div>
             <button type="submit">Enviar Archivo</button>
         </form>
