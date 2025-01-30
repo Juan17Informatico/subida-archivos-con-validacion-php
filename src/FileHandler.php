@@ -1,5 +1,7 @@
 <?php
 
+require_once "../config/ConectionDB.php";
+
 // Restricciones y Reglas
 $uploadDir = "files/"; // 
 $allowedFileType = "text/plain"; // solo txt
@@ -34,7 +36,28 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
         // Mueve el archivo al directorio de destino
         if (move_uploaded_file($fileTmpPath, $destPath)) {
-            echo "El archivo se ha subido correctamente a: " . htmlspecialchars($destPath);
+            
+            $conexion = conectarDB();
+
+            if (!$conexion) {
+                
+                die("Error en el formulario, vuelve a intentarlo mas tarde");
+
+            } else {
+                
+                $sql = "INSERT INTO archivos (nombre, ruta) VALUES ('$uniqueFileName', '$destPath')";
+
+                if(mysqli_query($conexion, $sql)) 
+                {
+                    echo "Archivo guardado exitosamente";
+                } else {
+                    echo "Error al guardar el archivo: " . mysqli_error($conexion);
+                }
+                mysqli_close($conexion);
+            }
+
+            echo "</br>El archivo se ha subido correctamente a: " . htmlspecialchars($destPath);
+            
         } else {
             die("Error: No se pudo mover el archivo al directorio de destino.");
         }
